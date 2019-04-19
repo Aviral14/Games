@@ -1,8 +1,7 @@
 This repository is meant for the projects made while learning python.
 Every folder is a game in itself.
-Games - Chef and Pong - use Python 2 and livewires module. To set the environment, type
+Games - Chef and Pong - use Python 3 and livewires module. To set the environment, type
 pip install livewires
-
 in your terminal.
 
-Future projects will use Python 3 and Pygame.
+Future projects will use Pygame.
