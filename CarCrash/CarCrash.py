@@ -4,9 +4,8 @@ from pygame.locals import *
 import random
 
 def load_image(name,color_key=None):
-	fullname=os.path.join('requirements',name)
 	try:
-		image=pygame.image.load(fullname)
+		image=pygame.image.load(name)
 	except:
 		print('Cannot load image:',name)
 		sys.exit()
@@ -18,9 +17,8 @@ def load_image(name,color_key=None):
 	return image,image.get_rect()
 
 def load_sound(name):	
-	fullname=os.path.join('requirements',name)
 	try:
-		sound=pygame.mixer.Sound(fullname)
+		sound=pygame.mixer.Sound(name)
 	except:
 		print('Cannot load Sound:',name)
 	return sound
