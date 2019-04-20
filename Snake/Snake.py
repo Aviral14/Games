@@ -5,14 +5,12 @@ import time
 import random
 
 
-def text_display(size,caption,posix,posiy,k):
+def text_display(size,caption,posix,posiy):
 	font= pygame.font.Font('freesansbold.ttf', size)
 	text = font.render(caption, True, (255,0,0)) 
 	textRect = text.get_rect()
 	textRect.center = (posix, posiy)
 	screen.blit(text,textRect) 
-	if k:
-		time.sleep(5)
 	
 
 def load_image(name):
@@ -123,24 +121,23 @@ class Snake(pygame.sprite.Sprite):
 		
 	def update(self):
 		if self.rect.centerx<77 or self.rect.centerx>1127:
-			text_display(512,'Game Over',600,300,1)
-			sys.exit()
+			snake_parts.empty()
 		if self.rect.centery<58 or self.rect.centery>543:
-			text_display(512,'Game Over',600,300,1)
-			sys.exit()
+			snake_parts.empty()
 		self.rect.centerx+=self.speedx
 		self.rect.centery+=self.speedy
 		if not (self.rect.centerx==face.rect.centerx) and (self.rect.centery==face.rect.centery):
 			snake_parts.remove(face,new_next)
 			list=pygame.sprite.spritecollide(face,snake_parts,True)
 			if len(list):
-				text_display(512,'Game Over',600,300,1)
-				sys.exit()	
-			snake_parts.add(face,new_next)		
+				face.kill()
+				new_next.kill()
+				snake_parts.empty()
+			else:
+				snake_parts.add(face,new_next)	
 		
 		list2=pygame.sprite.spritecollide(food,snake_parts,False)
 		if len(list2):
-		#if (food.rect.centerx<=self.rect.centerx+20 and food.rect.centerx>=face.rect.centerx-20) and (food.rect.centery>=self.rect.centery-20 and food.rect.centery<=self.rect.centery+20):
 			handle_eat()
 		
 	
@@ -183,8 +180,9 @@ k=0
 
 new_next=None
 h=0
+game_control=True
 
-while 1:
+while game_control:
 
 	clock.tick()
 
@@ -231,9 +229,12 @@ while 1:
 	screen.blit(background,(0,0))
 
 	snake_parts.draw(screen)
-	snake_parts.update()	
-	screen.blit(food.image,(food.rect.centerx,food.rect.centery))	
-	text_display(42,'Score: '+str(score),1030,81,0)		
+	snake_parts.update()
+	if len(snake_parts.sprites())==0:
+		text_display(128,'Game Over',600,300)
+	else:	
+		screen.blit(food.image,(food.rect.centerx,food.rect.centery))	
+	text_display(42,'Score: '+str(score),1030,81)		
 	pygame.display.flip()
-
-		
+	
+	
