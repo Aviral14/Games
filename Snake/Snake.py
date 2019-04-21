@@ -122,8 +122,10 @@ class Snake(pygame.sprite.Sprite):
 	def update(self):
 		if self.rect.centerx<77 or self.rect.centerx>1127:
 			snake_parts.empty()
+			return
 		if self.rect.centery<58 or self.rect.centery>543:
 			snake_parts.empty()
+			return
 		self.rect.centerx+=self.speedx
 		self.rect.centery+=self.speedy
 		if not (self.rect.centerx==face.rect.centerx) and (self.rect.centery==face.rect.centery):
