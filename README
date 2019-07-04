@@ -1,7 +1,7 @@
 This repository is meant for the projects made while learning python.
 Every folder is a game in itself.
-Games - Chef and Pong - use livewires module. To set the environment, type
-pip install livewires 
+Games - Chef and Pong - use livewires/superwires module. To set the environment, type
+pip install SuperWires 
 in your terminal.
 The Games-CarCrash and Snake use the Pygame library.Type
 pip install pygame 
