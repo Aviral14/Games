@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+"""Classic Snake Game built with pygame engine"""
+
 import sys
 import random
 import pygame
@@ -94,7 +97,7 @@ class Snake(pygame.sprite.Sprite):
 
     def handle_turn():
         for obj in snake_parts.sprites():
-            if len(obj.action):
+            if obj.action:
                 if obj.action[0][2] == 'u':
                     if obj.rect.centerx == obj.action[0][0] and \
                             obj.rect.centery == obj.action[0][1]:
@@ -133,8 +136,8 @@ class Snake(pygame.sprite.Sprite):
         if not (self.rect.centerx == face.rect.centerx) and \
                 (self.rect.centery == face.rect.centery):
             snake_parts.remove(face, new_next)
-            list = pygame.sprite.spritecollide(face, snake_parts, True)
-            if len(list):
+            list1 = pygame.sprite.spritecollide(face, snake_parts, True)
+            if list1:
                 face.kill()
                 new_next.kill()
                 snake_parts.empty()
@@ -142,7 +145,7 @@ class Snake(pygame.sprite.Sprite):
                 snake_parts.add(face, new_next)
 
         list2 = pygame.sprite.spritecollide(food, snake_parts, False)
-        if len(list2):
+        if list2:
             handle_eat()
 
 pygame.init()
@@ -222,7 +225,7 @@ while game_control:
     snake_parts.draw(screen)
     snake_parts.update()
 
-    if len(snake_parts.sprites()) == 0:
+    if not snake_parts.sprites():
         text_display(128, 'Game Over', 600, 300)
     else:
         screen.blit(food.image, (food.rect.centerx, food.rect.centery))
