@@ -6,6 +6,8 @@ import random
 import pygame
 from pygame.locals import *
 
+#Pause Variable
+pause=False
 
 def text_display(size, caption, posix, posiy):
     font = pygame.font.Font('freesansbold.ttf', size)
@@ -224,6 +226,18 @@ while game_control:
     screen.blit(background, (0, 0))
     snake_parts.draw(screen)
     snake_parts.update()
+
+    for event in pygame.event.get():
+        if event.type==KEYUP:
+            if event.key==K_p:
+                pause = True
+                
+    while pause == True:
+        for event in pygame.event.get():
+            if event.type==KEYUP:
+                if event.key==K_p:
+                    pause = False
+
 
     if not snake_parts.sprites():
         text_display(128, 'Game Over', 600, 300)
