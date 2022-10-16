@@ -7,6 +7,8 @@ import pygame
 from pygame.locals import *
 
 
+
+
 def text_display(size, caption, posix, posiy):
     font = pygame.font.Font('freesansbold.ttf', size)
     text = font.render(caption, True, (255, 0, 0))
@@ -27,7 +29,9 @@ def handle_eat():
     global snake_parts
     global new_next
     global h
+    global pause
 
+    
     x, y = find_random()
     food.rect.centerx = x
     food.rect.centery = y
@@ -85,6 +89,29 @@ def find_random():
     y = random.randint(78, 523)
     return x, y
 
+    
+
+def paused():
+    
+
+
+    while pause:
+        for event in pygame.event.get():
+
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
+                
+                return
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            
+
+        #gameDisplay.fill(white)
+
+        pygame.display.update()
+        clock.tick(15)
+ 
+
 class Snake(pygame.sprite.Sprite):
     def __init__(self, name, speedx, speedy, x, y):
         super(Snake, self).__init__()
@@ -94,6 +121,7 @@ class Snake(pygame.sprite.Sprite):
         self.rect.centerx = x
         self.rect.centery = y
         self.action = []
+        
 
     def handle_turn():
         for obj in snake_parts.sprites():
@@ -124,6 +152,8 @@ class Snake(pygame.sprite.Sprite):
                         obj.speedy = 0
                         obj.action.pop(0)
 
+    
+    
     def update(self):
         if self.rect.centerx < 77 or self.rect.centerx > 1127:
             snake_parts.empty()
@@ -147,6 +177,8 @@ class Snake(pygame.sprite.Sprite):
         list2 = pygame.sprite.spritecollide(food, snake_parts, False)
         if list2:
             handle_eat()
+
+
 
 pygame.init()
 screen = pygame.display.set_mode((1200, 600))
@@ -185,11 +217,53 @@ game_control = True
 while game_control:
     clock.tick()
     for event in pygame.event.get():
+        
         if event.type == QUIT:
             sys.exit()
 
+                    
         if event.type == KEYDOWN and event.key == K_ESCAPE:
             sys.exit()
+
+        if event.type == KEYDOWN and event.key == K_r:
+            pygame.init()
+            screen = pygame.display.set_mode((1200, 600))
+            pygame.display.set_caption('Snake')
+            background = pygame.image.load('background.png')
+            background = background.convert()
+            screen.blit(background, (0, 0))
+
+            posx = None
+            posy = None
+            ch = None
+
+            score = 0
+
+            gspeed = 1
+
+            face = Snake('snake.png', gspeed, 0, 600, 300)
+            tail = face
+
+            clock = pygame.time.Clock()
+
+            snake_parts = pygame.sprite.Group()
+            snake_parts.add(face)
+
+            food = pygame.sprite.Sprite()
+            food.image, food.rect = load_image('food.png')
+            food.rect.centerx = 290
+            food.rect.centery = 290
+
+            k = 0
+
+            new_next = None
+            h = 0
+            game_control = True
+
+
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
+                pause = True
+                paused()
 
         if event.type == KEYDOWN and event.key == K_UP and face.speedx != 0:
             posx = face.rect.centerx
@@ -227,7 +301,10 @@ while game_control:
 
     if not snake_parts.sprites():
         text_display(128, 'Game Over', 600, 300)
+        
     else:
         screen.blit(food.image, (food.rect.centerx, food.rect.centery))
     text_display(42, 'Score: ' + str(score), 1030, 81)
     pygame.display.flip()
+
+
